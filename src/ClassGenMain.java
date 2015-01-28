@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class ClassGenMain {
@@ -24,7 +26,15 @@ public class ClassGenMain {
 				for(Kid k : kidList) {   // KIDS
 					KidAct ka = new KidAct();
 					ka.name = k.name; 
-					ka.act = k.act.get(i);
+					try {
+						ka.act = k.act.get(i);
+					} catch (IndexOutOfBoundsException e) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(ka.act).append("|").append(ka.name).append("|")
+							.append("No activity choice for ").append(i+1);
+						System.out.println(sb.toString());
+						continue;
+					}
 					ka.grade = k.grade;
 	
 					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + ka.grade);
@@ -36,7 +46,7 @@ public class ClassGenMain {
 					else if ( actHour != null && k.actSchedList.get(actHour-1) ){
 						StringBuilder sb = new StringBuilder();
 						sb.append(ka.act).append("|").append(ka.name).append("|")
-							.append("Failed to register for grade-spec activity choice ").append(i);
+							.append("Failed to register student for grade-spec activity choice ").append(i+1);
 						System.out.println(sb.toString());
 					}
 	
@@ -49,7 +59,12 @@ public class ClassGenMain {
 					
 					KidAct ka = new KidAct();
 					ka.name = k.name; 
-					ka.act = k.act.get(i);
+					try {
+						ka.act = k.act.get(i);
+					} catch (IndexOutOfBoundsException e) {
+						// Nothing to log.  Logged in prev loop
+						continue;
+					}
 					ka.grade = k.grade;
 
 					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + k.grade);
@@ -63,6 +78,14 @@ public class ClassGenMain {
 						
 						String actClassName = ka.act + "-" + (j+1);
 						Activity act = th.actCapacityMap.get(actClassName);
+						if (act == null) {
+							StringBuilder sb = new StringBuilder();
+							sb.append(ka.act).append("|").append(ka.name).append("|")
+								.append("Activity not found:  ").append(actClassName);
+							System.out.println(sb.toString());
+							continue;
+						}
+						
 						if (act.isFull()) continue;
 						
 						clazList = th.scheduleMap.get(actClassName);			
@@ -76,7 +99,7 @@ public class ClassGenMain {
 					if (!isRegistrationSuccess) {
 						StringBuilder sb = new StringBuilder();
 						sb.append(ka.act).append("|").append(ka.name).append("|")
-							.append("Failed to register for grade-spec activity choice ").append(i);
+							.append("Failed to register student for grade-spec activity choice ").append(i+1);
 						System.out.println(sb.toString());
 					}
 				}
@@ -87,11 +110,12 @@ public class ClassGenMain {
 			e.printStackTrace();
 		}
 		
-		th.printScheduleMap(th.scheduleMap);
+		th.printFullSchedule(th.scheduleMap);
+		th.printStudentSchedules(th.scheduleMap);
 		
 	}
 	
-	void printScheduleMap(Map< String,List<KidAct> > scheduleMap) {
+	void printFullSchedule(Map< String,List<KidAct> > scheduleMap) {
 		Iterator<String> iter = scheduleMap.keySet().iterator();
 		while (iter.hasNext()) {
 			String key = (String) iter.next();
@@ -100,6 +124,14 @@ public class ClassGenMain {
 				System.out.println(key + "|  " + kid.name);		
 			}
 		}
+	}
+	
+	void printStudentSchedules(Map< String,List<KidAct> > scheduleMap) {
+		 Set<String> k = scheduleMap.keySet();
+		 Arrays.sort( k.toArray() );
+		 k.hashCode();
+		 //TODO - COMPLETE
+		
 	}
 	
 	
@@ -177,7 +209,8 @@ public class ClassGenMain {
 		actCapacityMap.put("flag-4", new Activity(null, 2));
 		
 		
-		List<Kid> kidList = populateKidList();
+		StudentReader reader = new StudentReader();
+		List<Kid> kidList = reader.readStudentActivities();
 		
 		return kidList;
 	}
