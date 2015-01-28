@@ -22,7 +22,7 @@ public class StudentReader {
 				List<String> tokList = Arrays.asList( sCurrentLine.split(",") );
 				
 				Kid k = new Kid();
-				k.name = tokList.get(1) + ", " + tokList.get(0);
+				k.name = tokList.get(0) + ", " + tokList.get(1);
 				k.grade = tokList.get(2);
 				k.act = tokList.subList(3, tokList.size() );
 
