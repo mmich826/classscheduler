@@ -110,8 +110,9 @@ public class ClassGenMain {
 			e.printStackTrace();
 		}
 		
-		th.printFullSchedule(th.scheduleMap);
-		th.printStudentSchedules(th.scheduleMap);
+		//th.printFullSchedule(th.scheduleMap);
+		//th.printRosterByActivity(th.scheduleMap);
+		th.printStudentSchedule(th.scheduleMap);
 		
 	}
 	
@@ -126,14 +127,39 @@ public class ClassGenMain {
 		}
 	}
 	
-	void printStudentSchedules(Map< String,List<KidAct> > scheduleMap) {
-		 Set<String> k = scheduleMap.keySet();
-		 Arrays.sort( k.toArray() );
-		 k.hashCode();
-		 //TODO - COMPLETE
-		
+	void printRosterByActivity(Map< String,List<KidAct> > scheduleMap) {
+		 Object[] keys = scheduleMap.keySet().toArray();
+		 Arrays.sort(keys);
+		 
+		 for (Object key : keys) {			
+			List<KidAct> kids = scheduleMap.get((String)key) ;
+			for (KidAct kid : kids) {
+				System.out.println(key + "|  " + kid.name);		
+			}
+		}
 	}
 	
+	void printStudentSchedule(Map< String,List<KidAct> > scheduleMap) {
+		List<KidAct> kidActList = new ArrayList<KidAct>();
+		
+		Iterator<String> iter = scheduleMap.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = (String) iter.next();
+			List<KidAct> kids = scheduleMap.get(key) ;
+			for (KidAct kid : kids) {
+				//System.out.println(key + "|  " + kid.name);
+				kidActList.add(kid);
+			}
+		}
+		
+		KidAct[] studentActivities = new KidAct[kidActList.size()];
+		kidActList.toArray(studentActivities);
+		Arrays.sort(studentActivities, new KidActByStudentComparator() );
+		 
+		 for (KidAct studentAct : studentActivities) {			
+			System.out.println(studentAct.getAct() + "|  " + studentAct.getName());		
+		}
+	}
 	
 	
 	public List<Kid> genData() {
@@ -300,11 +326,56 @@ class KidAct {
 	String name;
 	String act;
 	String grade;
+	String teacher;
 	
 	@Override
 	public String toString() {
 		return "KidAct [name=" + name + ", act=" + act + ", grade=" + grade
 				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAct() {
+		return act;
+	}
+
+	public void setAct(String act) {
+		this.act = act;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
 	}
 }
 
