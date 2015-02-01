@@ -24,7 +24,7 @@ public class KidActByStudentComparator implements Comparator<KidAct> {
 		}
 		
 		// Same Grade and teacher
-		return o1.getTeacher().compareTo(o2.getTeacher());
+		return o1.getName().compareTo(o2.getName());
 	}
 
 }

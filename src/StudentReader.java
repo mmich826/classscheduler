@@ -16,15 +16,22 @@ public class StudentReader {
 		{
  
 			String sCurrentLine;
- 
+			int i = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
+				i++;
 				//System.out.println(sCurrentLine);
 				List<String> tokList = Arrays.asList( sCurrentLine.split(",") );
+				
+				if (tokList == null || tokList.isEmpty() || tokList.get(0) == null || tokList.get(0).isEmpty()) {
+					System.out.println("Bad line reading file - either blank line or empty name.  Line number " + i);
+					continue;
+				}
 				
 				Kid k = new Kid();
 				k.name = tokList.get(0) + ", " + tokList.get(1);
 				k.grade = tokList.get(2);
-				k.act = tokList.subList(3, tokList.size() );
+				k.teacher = tokList.get(3);
+				k.act = tokList.subList(4, tokList.size() );
 
 				kidList.add(k);
 				//System.out.println(k);

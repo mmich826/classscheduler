@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
+//TODO - Create File Writers.  First, impl csv writer
+//TODO - log4j.  2 appenders; Errors(console), file for registration issues
 public class ClassGenMain {
 	
 	Map< String,Activity > actCapacityMap = null;
@@ -22,7 +23,7 @@ public class ClassGenMain {
 			List<KidAct> clazList = null;
 			
 			// Schedule grade specific activities first
-			for (int i = 0; i < 4; i++) {  // CLASSES
+			for (int i = 0; i < 4; i++) {  // CLASS HOURS
 				for(Kid k : kidList) {   // KIDS
 					KidAct ka = new KidAct();
 					ka.name = k.name; 
@@ -36,6 +37,8 @@ public class ClassGenMain {
 						continue;
 					}
 					ka.grade = k.grade;
+					ka.teacher = k.teacher;
+					ka.hour = Integer.toString(i+1);
 	
 					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + ka.grade);
 					if (actHour != null && !k.actSchedList.get(actHour-1)) {						
@@ -52,9 +55,9 @@ public class ClassGenMain {
 	
 				}
 			}
-			
+//th.printFullSchedule(th.scheduleMap);			
 			// Now schedule remaining activities
-			for (int i = 0; i < 4; i++) {  // CLASSES
+			for (int i = 0; i < 4; i++) {  // CLASS HOURS
 				for(Kid k : kidList) {   // KIDS
 					
 					KidAct ka = new KidAct();
@@ -66,17 +69,20 @@ public class ClassGenMain {
 						continue;
 					}
 					ka.grade = k.grade;
-
+					ka.teacher = k.teacher;
+					ka.hour = Integer.toString(i+1);
+					
 					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + k.grade);
 					if (actHour != null) continue;
 					
 					boolean isRegistrationSuccess = false;
-					for(int j=0; j<4; j++) {   // KID CLASSES
+					for(int j=0; j<4; j++) {   // KID CLASS LIST
 					
 						boolean isBooked = k.actSchedList.get(j);
 						if (isBooked) continue;
 						
 						String actClassName = ka.act + "-" + (j+1);
+						ka.hour = String.valueOf(j+1);
 						Activity act = th.actCapacityMap.get(actClassName);
 						if (act == null) {
 							StringBuilder sb = new StringBuilder();
@@ -110,20 +116,31 @@ public class ClassGenMain {
 			e.printStackTrace();
 		}
 		
-		//th.printFullSchedule(th.scheduleMap);
+		th.printFullSchedule(th.scheduleMap);
 		//th.printRosterByActivity(th.scheduleMap);
-		th.printStudentSchedule(th.scheduleMap);
+		//th.printStudentSchedule(th.scheduleMap);
 		
 	}
 	
 	void printFullSchedule(Map< String,List<KidAct> > scheduleMap) {
+		List<KidAct> kidActList = new ArrayList<KidAct>();
+		
 		Iterator<String> iter = scheduleMap.keySet().iterator();
 		while (iter.hasNext()) {
 			String key = (String) iter.next();
 			List<KidAct> kids = scheduleMap.get(key) ;
 			for (KidAct kid : kids) {
-				System.out.println(key + "|  " + kid.name);		
+				//System.out.println(key + "|" + kid.name);
+				kidActList.add(kid);
 			}
+		}
+		
+		KidAct[] studentActivities = new KidAct[kidActList.size()];
+		kidActList.toArray(studentActivities);
+		Arrays.sort(studentActivities, new KidActByStudentComparator() );
+		 
+		 for (KidAct studentAct : studentActivities) {			
+			System.out.println(studentAct.getAct() + "-" + studentAct.getHour() + "|" + studentAct.getName() + "|" + studentAct.getGrade());		
 		}
 	}
 	
@@ -133,9 +150,11 @@ public class ClassGenMain {
 		 
 		 for (Object key : keys) {			
 			List<KidAct> kids = scheduleMap.get((String)key) ;
+			// Set html header
 			for (KidAct kid : kids) {
-				System.out.println(key + "|  " + kid.name);		
+				System.out.println(key + "|" + kid.name);		
 			}
+			// Set html footer
 		}
 	}
 	
@@ -147,7 +166,7 @@ public class ClassGenMain {
 			String key = (String) iter.next();
 			List<KidAct> kids = scheduleMap.get(key) ;
 			for (KidAct kid : kids) {
-				//System.out.println(key + "|  " + kid.name);
+				//System.out.println(key + "|" + kid.name);
 				kidActList.add(kid);
 			}
 		}
@@ -156,9 +175,16 @@ public class ClassGenMain {
 		kidActList.toArray(studentActivities);
 		Arrays.sort(studentActivities, new KidActByStudentComparator() );
 		 
-		 for (KidAct studentAct : studentActivities) {			
-			System.out.println(studentAct.getAct() + "|  " + studentAct.getName());		
+		String name = "_BEGIN";
+		for (KidAct studentAct : studentActivities) {	
+			 if (name == null || !name.equals(studentAct.getName()) ) {
+				 name = studentAct.getName();
+				 // If not first, set footer hnml
+				 // Set header html
+			 }
+			 System.out.println(studentAct.getAct() + "-" + studentAct.getHour() + "|" + name + " " + studentAct.getName() + "|" + studentAct.getGrade());		
 		}
+		// Pg end.  Set footer html
 	}
 	
 	
@@ -203,36 +229,36 @@ public class ClassGenMain {
 		scheduleMap.put("flag-3", new ArrayList<KidAct>() );
 		scheduleMap.put("flag-4", new ArrayList<KidAct>() );
 		
-		
+		int CAPACITY = 4;
 		actCapacityMap = new HashMap<String, Activity>();
-		actCapacityMap.put("bb-1", new Activity(null, 2));
-		actCapacityMap.put("bb-2", new Activity(null, 2));
-		actCapacityMap.put("bb-3", new Activity(null, 2));
-		actCapacityMap.put("bb-4", new Activity(null, 2));
-		actCapacityMap.put("hockey-1", new Activity(null, 2));
-		actCapacityMap.put("hockey-2", new Activity(null, 2));
-		actCapacityMap.put("hockey-3", new Activity(null, 2));
-		actCapacityMap.put("hockey-4", new Activity(null, 2));
-		actCapacityMap.put("fb-1", new Activity(null, 2));
-		actCapacityMap.put("fb-2", new Activity(null, 2));
-		actCapacityMap.put("fb-3", new Activity(null, 2));
-		actCapacityMap.put("fb-4", new Activity(null, 2));
-		actCapacityMap.put("rock-1", new Activity(null, 2));
-		actCapacityMap.put("rock-2", new Activity(null, 2));
-		actCapacityMap.put("rock-3", new Activity(null, 2));
-		actCapacityMap.put("rock-4", new Activity(null, 2));
-		actCapacityMap.put("soccer-1", new Activity(null, 2));
-		actCapacityMap.put("soccer-2", new Activity(null, 2));
-		actCapacityMap.put("soccer-3", new Activity(null, 2));
-		actCapacityMap.put("soccer-4", new Activity(null, 2));
-		actCapacityMap.put("pizza-1", new Activity(null, 2));
-		actCapacityMap.put("pizza-2", new Activity(null, 2));
-		actCapacityMap.put("pizza-3", new Activity(null, 2));
-		actCapacityMap.put("pizza-4", new Activity(null, 2));
-		actCapacityMap.put("flag-1", new Activity(null, 2));
-		actCapacityMap.put("flag-2", new Activity(null, 2));
-		actCapacityMap.put("flag-3", new Activity(null, 2));
-		actCapacityMap.put("flag-4", new Activity(null, 2));
+		actCapacityMap.put("bb-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("bb-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("bb-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("bb-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("hockey-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("hockey-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("hockey-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("hockey-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("fb-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("fb-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("fb-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("fb-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("rock-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("rock-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("rock-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("rock-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("soccer-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("soccer-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("soccer-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("soccer-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("pizza-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("pizza-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("pizza-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("pizza-4", new Activity(null, CAPACITY));
+		actCapacityMap.put("flag-1", new Activity(null, CAPACITY));
+		actCapacityMap.put("flag-2", new Activity(null, CAPACITY));
+		actCapacityMap.put("flag-3", new Activity(null, CAPACITY));
+		actCapacityMap.put("flag-4", new Activity(null, CAPACITY));
 		
 		
 		StudentReader reader = new StudentReader();
@@ -300,9 +326,9 @@ public class ClassGenMain {
 }
 
 class Kid {
-	String name;
-	String grade;
-	String teacher;
+	String name = "";
+	String grade = "";
+	String teacher = "";
 	List<String> act = new ArrayList<String>();
 	List<Boolean> actSchedList = new ArrayList<Boolean>();
 	
@@ -323,29 +349,13 @@ class Kid {
 }
 
 class KidAct {
-	String name;
-	String act;
-	String grade;
-	String teacher;
+	String name = "";
+	String grade = "";
+	String teacher = "";
+
+	String act = "";
+	String hour = "";
 	
-	@Override
-	public String toString() {
-		return "KidAct [name=" + name + ", act=" + act + ", grade=" + grade
-				+ "]";
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -376,6 +386,32 @@ class KidAct {
 
 	public void setTeacher(String teacher) {
 		this.teacher = teacher;
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
+	}
+
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return "KidAct [name=" + name + ", grade=" + grade + ", teacher="
+				+ teacher + ", act=" + act + ", hour=" + hour + "]";
 	}
 }
 
