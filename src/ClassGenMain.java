@@ -38,15 +38,15 @@ public class ClassGenMain {
 					}
 					ka.grade = k.grade;
 					ka.teacher = k.teacher;
-					ka.hour = Integer.toString(i+1);
 	
-					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + ka.grade);
-					if (actHour != null && !k.actSchedList.get(actHour-1)) {						
-						clazList = th.scheduleMap.get(ka.act + "-" + actHour );			
+					Integer gradeActHour = th.gradeScheduleMap.get(ka.act + "-" + ka.grade);
+					if (gradeActHour != null && !k.actSchedList.get(gradeActHour-1)) {						
+						clazList = th.scheduleMap.get(ka.act + "-" + gradeActHour );			
+						ka.hour = gradeActHour.toString();
 						clazList.add(ka);
-						k.actSchedList.set(actHour-1, true);
+						k.actSchedList.set(gradeActHour-1, true);
 					}
-					else if ( actHour != null && k.actSchedList.get(actHour-1) ){
+					else if ( gradeActHour != null && k.actSchedList.get(gradeActHour-1) ){
 						StringBuilder sb = new StringBuilder();
 						sb.append(ka.act).append("|").append(ka.name).append("|")
 							.append("Failed to register student for grade-spec activity choice ").append(i+1);
@@ -55,7 +55,9 @@ public class ClassGenMain {
 	
 				}
 			}
-//th.printFullSchedule(th.scheduleMap);			
+			//th.printFullSchedule(th.scheduleMap);		
+			
+			
 			// Now schedule remaining activities
 			for (int i = 0; i < 4; i++) {  // CLASS HOURS
 				for(Kid k : kidList) {   // KIDS
@@ -190,10 +192,10 @@ public class ClassGenMain {
 	
 	public List<Kid> genData() {
 		gradeScheduleMap = new HashMap< String,Integer >();
-		gradeScheduleMap.put("bb-1", new Integer(1) );
-		gradeScheduleMap.put("bb-2", new Integer(2) );
-		gradeScheduleMap.put("bb-3", new Integer(3) );
-		gradeScheduleMap.put("bb-4", new Integer(4) );
+		gradeScheduleMap.put("bb-1", new Integer(4) );
+		gradeScheduleMap.put("bb-2", new Integer(3) );
+		gradeScheduleMap.put("bb-3", new Integer(2) );
+		gradeScheduleMap.put("bb-4", new Integer(1) );
 		gradeScheduleMap.put("fb-1", new Integer(1) );
 		gradeScheduleMap.put("fb-2", new Integer(2) );
 		gradeScheduleMap.put("fb-3", new Integer(3) );
