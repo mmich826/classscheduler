@@ -12,20 +12,22 @@ public class ClassGenMain {
 	
 	Map< String,Activity > actCapacityMap = null;
 	Map< String,List<KidAct> > scheduleMap = null;
-	Map< String,Integer > gradeScheduleMap = null;
+	Map< String,List<Integer> > gradeScheduleMap2 = null; // key=grade, value=List hours offered
 
 	public static void main(String[] args) {
 		
 		ClassGenMain th = new ClassGenMain();
-		try {
-			List<Kid> kidList = th.genData();
 
-			List<KidAct> clazList = null;
-			
+		List<Kid> kidList = th.genData();
+
+		List<KidAct> clazList = null;
+		KidAct ka = null;
+		try {
+
 			// Schedule grade specific activities first
-			for (int i = 0; i < 4; i++) {  // CLASS HOURS
-				for(Kid k : kidList) {   // KIDS
-					KidAct ka = new KidAct();
+			for (int i = 0; i < 4; i++) {  // CLASS PRIORITY
+				for(Kid k : kidList) {   // STUDENTS
+					ka = new KidAct();
 					ka.name = k.name; 
 					try {
 						ka.act = k.act.get(i);
@@ -39,14 +41,29 @@ public class ClassGenMain {
 					ka.grade = k.grade;
 					ka.teacher = k.teacher;
 	
-					Integer gradeActHour = th.gradeScheduleMap.get(ka.act + "-" + ka.grade);
-					if (gradeActHour != null && !k.actSchedList.get(gradeActHour-1)) {						
-						clazList = th.scheduleMap.get(ka.act + "-" + gradeActHour );			
-						ka.hour = gradeActHour.toString();
-						clazList.add(ka);
-						k.actSchedList.set(gradeActHour-1, true);
+					List<Integer> gradeActHours = th.gradeScheduleMap2.get(ka.act + "-" + ka.grade);
+					boolean isRegistrationSuccess = false;
+					boolean isGradeSpecActivity = gradeActHours != null && !gradeActHours.isEmpty();
+					if (isGradeSpecActivity) {						
+						for (int j=0; j<gradeActHours.size(); j++) {
+							int hour = gradeActHours.get(j);
+							if (k.actSchedList.get(hour-1)) continue;  // true=Student booked this hour
+							
+							String actName = ka.act + "-" + hour;
+							Activity act = th.actCapacityMap.get(actName);
+							if (act.isFull()) continue;
+
+							clazList = th.scheduleMap.get(actName);							
+							ka.hour = Integer.toString(hour);
+							clazList.add(ka);
+							act.enrollment++;
+							k.actSchedList.set(hour-1, true);
+							isRegistrationSuccess = true;
+							break;
+						}
 					}
-					else if ( gradeActHour != null && k.actSchedList.get(gradeActHour-1) ){
+					
+					if ( isGradeSpecActivity && !isRegistrationSuccess ){
 						StringBuilder sb = new StringBuilder();
 						sb.append(ka.act).append("|").append(ka.name).append("|")
 							.append("Failed to register student for grade-spec activity choice ").append(i+1);
@@ -56,13 +73,20 @@ public class ClassGenMain {
 				}
 			}
 			//th.printFullSchedule(th.scheduleMap);		
+		} catch (Exception e) {
+			System.out.println("Error scheduling:  " + ka);
+			e.printStackTrace();
+		}
+	
 			
 			
 			// Now schedule remaining activities
-			for (int i = 0; i < 4; i++) {  // CLASS HOURS
+			ka = null;
+			try {
+			for (int i = 0; i < 4; i++) {  // CLASS PRIORITY
 				for(Kid k : kidList) {   // KIDS
 					
-					KidAct ka = new KidAct();
+					ka = new KidAct();
 					ka.name = k.name; 
 					try {
 						ka.act = k.act.get(i);
@@ -72,19 +96,20 @@ public class ClassGenMain {
 					}
 					ka.grade = k.grade;
 					ka.teacher = k.teacher;
-					ka.hour = Integer.toString(i+1);
+                    ka.hour = Integer.toString(i+1);
 					
-					Integer actHour = th.gradeScheduleMap.get(ka.act + "-" + k.grade);
-					if (actHour != null) continue;
+					List<Integer> gradeActHours = th.gradeScheduleMap2.get(ka.act + "-" + k.grade);
+					boolean isGradeSpecActivity = gradeActHours != null && !gradeActHours.isEmpty();
+					if (isGradeSpecActivity) continue;
 					
 					boolean isRegistrationSuccess = false;
-					for(int j=0; j<4; j++) {   // KID CLASS LIST
+					for(int j=0; j<4; j++) {   // ACT HOURS
 					
 						boolean isBooked = k.actSchedList.get(j);
 						if (isBooked) continue;
 						
-						String actClassName = ka.act + "-" + (j+1);
-						ka.hour = String.valueOf(j+1);
+                        String actClassName = ka.act + "-" + (j+1);
+                        ka.hour = String.valueOf(j+1);
 						Activity act = th.actCapacityMap.get(actClassName);
 						if (act == null) {
 							StringBuilder sb = new StringBuilder();
@@ -96,7 +121,7 @@ public class ClassGenMain {
 						
 						if (act.isFull()) continue;
 						
-						clazList = th.scheduleMap.get(actClassName);			
+						clazList = th.scheduleMap.get(actClassName);	
 						clazList.add(ka);
 						act.enrollment++;
 						k.actSchedList.set(j, true);
@@ -115,6 +140,7 @@ public class ClassGenMain {
 			
 			//System.out.println("-----------> End Loop");
 		} catch (Exception e) {
+			System.out.println("Error scheduling:  " + ka);
 			e.printStackTrace();
 		}
 		
@@ -150,7 +176,7 @@ public class ClassGenMain {
 		 Object[] keys = scheduleMap.keySet().toArray();
 		 Arrays.sort(keys);
 		 
-		 for (Object key : keys) {			
+ 		 for (Object key : keys) {			
 			List<KidAct> kids = scheduleMap.get((String)key) ;
 			// Set html header
 			for (KidAct kid : kids) {
@@ -191,7 +217,7 @@ public class ClassGenMain {
 	
 	
 	public List<Kid> genData() {
-		gradeScheduleMap = new HashMap< String,Integer >();
+/*		gradeScheduleMap = new HashMap< String,Integer >();
 		gradeScheduleMap.put("bb-1", new Integer(4) );
 		gradeScheduleMap.put("bb-2", new Integer(3) );
 		gradeScheduleMap.put("bb-3", new Integer(2) );
@@ -200,7 +226,34 @@ public class ClassGenMain {
 		gradeScheduleMap.put("fb-2", new Integer(2) );
 		gradeScheduleMap.put("fb-3", new Integer(3) );
 		gradeScheduleMap.put("fb-4", new Integer(4) );
+*/
+		gradeScheduleMap2 = new HashMap< String,List<Integer> >();
+		List<Integer> gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
+			gradeScheduleMap2.put("bb-1", gradeGroup);
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
+			gradeScheduleMap2.put("bb-2", gradeGroup );
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(2)); gradeGroup.add(new Integer(1));
+			gradeScheduleMap2.put("bb-3", gradeGroup );
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(2)); gradeGroup.add(new Integer(1));
+			gradeScheduleMap2.put("bb-4", gradeGroup );
 		
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(2)); gradeGroup.add(new Integer(1));
+			gradeScheduleMap2.put("fb-1", gradeGroup );
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(2)); gradeGroup.add(new Integer(1));
+			gradeScheduleMap2.put("fb-2", gradeGroup );
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
+			gradeScheduleMap2.put("fb-3", gradeGroup );
+		gradeGroup = new ArrayList<Integer>();
+		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
+			gradeScheduleMap2.put("fb-4", gradeGroup );
+
 		scheduleMap = new HashMap< String,List<KidAct> >();
 		scheduleMap.put("bb-1", new ArrayList<KidAct>() );
 		scheduleMap.put("bb-2", new ArrayList<KidAct>() );
@@ -231,7 +284,7 @@ public class ClassGenMain {
 		scheduleMap.put("flag-3", new ArrayList<KidAct>() );
 		scheduleMap.put("flag-4", new ArrayList<KidAct>() );
 		
-		int CAPACITY = 4;
+		int CAPACITY =5;
 		actCapacityMap = new HashMap<String, Activity>();
 		actCapacityMap.put("bb-1", new Activity(null, CAPACITY));
 		actCapacityMap.put("bb-2", new Activity(null, CAPACITY));
