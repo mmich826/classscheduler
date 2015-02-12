@@ -1,6 +1,9 @@
+package net.mich.explore.file;
 import java.util.List;
 
 import static junit.framework.Assert.*;
+import net.mich.explore.Student;
+import net.mich.explore.file.StudentScheduleReader;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,8 +17,8 @@ public class StudentReaderTest {
 
 	@Test
 	public void testReadStudentActivities() {
-		StudentReader reader = new StudentReader();
-		List<Kid> kidList = reader.readStudentActivities();
+		StudentScheduleReader reader = new StudentScheduleReader();
+		List<Student> kidList = reader.readStudentActivities();
 		
 //		assertEquals(2, kidList.size());
 		

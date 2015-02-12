@@ -3,7 +3,13 @@ package net.mich.explore.file;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import net.mich.explore.scheduler.GradeActivityScheduler;
+
+import org.apache.log4j.Logger;
+
 public class AllStudentFileWriter {
+	
+	private static final Logger LOGGER = Logger.getLogger(AllStudentFileWriter.class);
 
 	public String generateContent() {
 		StringBuilder sb = new StringBuilder();

@@ -1,10 +1,17 @@
+package net.mich.explore;
 import java.util.Comparator;
 
+import net.mich.explore.scheduler.GradeActivityScheduler;
 
-public class KidActByStudentComparator implements Comparator<KidAct> {
+import org.apache.log4j.Logger;
+
+
+public class StudentActByStudentComparator implements Comparator<StudentActivity> {
+	
+	private static final Logger LOGGER = Logger.getLogger(StudentActByStudentComparator.class);
 
 	@Override
-	public int compare(KidAct o1, KidAct o2) {
+	public int compare(StudentActivity o1, StudentActivity o2) {
 		if (o1 == o2) {
 			return 0;
 		}

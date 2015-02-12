@@ -1,3 +1,5 @@
+package net.mich.explore.file;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,12 +7,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 
-public class StudentReader {
+import net.mich.explore.Student;
+import net.mich.explore.scheduler.GradeActivityScheduler;
+
+
+public class StudentScheduleReader {
 	
-	public List<Kid> readStudentActivities() {
+	private static final Logger LOGGER = Logger.getLogger(StudentScheduleReader.class);
+
+	
+	public List<Student> readStudentActivities() {
 		
-		List<Kid> kidList = new ArrayList<>();
+		List<Student> StudentList = new ArrayList<>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader("StudentActivities.csv")))
 		{
@@ -27,13 +37,13 @@ public class StudentReader {
 					continue;
 				}
 				
-				Kid k = new Kid();
-				k.name = tokList.get(0) + ", " + tokList.get(1);
-				k.grade = tokList.get(2);
-				k.teacher = tokList.get(3);
-				k.act = tokList.subList(4, tokList.size() );
+				Student k = new Student();
+				k.setName( tokList.get(0) + ", " + tokList.get(1) );
+				k.setGrade( tokList.get(2) );
+				k.setTeacher( tokList.get(3) );
+				k.setAct( tokList.subList(4, tokList.size()) );
 
-				kidList.add(k);
+				StudentList.add(k);
 				//System.out.println(k);
 			}
  
@@ -41,6 +51,7 @@ public class StudentReader {
 			e.printStackTrace();
 		} 
  
-		return kidList;
+		return StudentList;
 	}
+
 }
