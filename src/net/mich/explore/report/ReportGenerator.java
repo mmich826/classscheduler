@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.mich.explore.StudentActByStudentComparator;
 import net.mich.explore.StudentActivity;
+import net.mich.explore.file.AllStudentFileWriter;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +17,8 @@ public class ReportGenerator {
 	private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
 
 	public void printFullSchedule(Map< String,List<StudentActivity> > scheduleMap) {
+		StringBuilder sb = new StringBuilder();
+		
 		List<StudentActivity> StudentActivityList = new ArrayList<StudentActivity>();
 		
 		Iterator<String> iter = scheduleMap.keySet().iterator();
@@ -33,7 +36,13 @@ public class ReportGenerator {
 		Arrays.sort(studentActivities, new StudentActByStudentComparator() );
 		 
 		 for (StudentActivity studentAct : studentActivities) {			
-			System.out.println(studentAct.getAct() + "-" + studentAct.getHour() + "|" + studentAct.getName() + "|" + studentAct.getGrade());		
+			sb.append(studentAct.getAct()).append("-").append(studentAct.getHour() )
+					.append("|").append(studentAct.getName())
+					.append("|").append(studentAct.getGrade())
+					.append("|").append(studentAct.getTeacher())
+					.append("\n");
+			
+			new AllStudentFileWriter().writeFile(sb.toString());
 		}
 	}
 	

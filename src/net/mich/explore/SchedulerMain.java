@@ -11,6 +11,10 @@ import net.mich.explore.scheduler.GradeActivityScheduler;
 
 
 //TODO - log4j.  2 appenders; Errors(console), file for registration issues
+//TODO - logic to fill gaps with extra classes until fill.  Add Kid isSchedFull method
+//TODO - reader for schedule file.  Also write sched to file
+//TODO - full schedule file writer
+
 public class SchedulerMain {
 	
 	private static final Logger LOGGER = Logger.getLogger(SchedulerMain.class);
@@ -29,7 +33,7 @@ public class SchedulerMain {
 			//rptGenerator.printFullSchedule(th.scheduleMap);  // Print just grade-spec schedule
 		new ActivityScheduler().schedule(th, studentList);
 		
-		//rptGenerator.printFullSchedule(th.scheduleMap);
+		rptGenerator.printFullSchedule(th.scheduleMap);
 		//rptGenerator.printRosterByActivity(th.scheduleMap);
 		//rptGenerator.printStudentSchedule(th.scheduleMap);
 

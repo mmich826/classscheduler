@@ -11,34 +11,15 @@ public class AllStudentFileWriter {
 	
 	private static final Logger LOGGER = Logger.getLogger(AllStudentFileWriter.class);
 
-	public String generateContent() {
-		StringBuilder sb = new StringBuilder();
-		
-		return sb.toString();
-	}
+	String sFileName = "all_student_schedule.csv";
 
-	   private static void generateCsvFile(String sFileName)
+	   public void writeFile(String content)
 	   {
 			try
 			{
 			    FileWriter writer = new FileWriter(sFileName);
 		 
-			    writer.append("DisplayName");
-			    writer.append(',');
-			    writer.append("Age");
-			    writer.append('\n');
-		 
-			    writer.append("MKYONG");
-			    writer.append(',');
-			    writer.append("26");
-		            writer.append('\n');
-		 
-			    writer.append("YOUR NAME");
-			    writer.append(',');
-			    writer.append("29");
-			    writer.append('\n');
-		 
-			    //generate whatever data you want
+			    writer.append(content);
 		 
 			    writer.flush();
 			    writer.close();
