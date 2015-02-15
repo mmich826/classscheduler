@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import net.mich.explore.Activity;
+import net.mich.explore.SchedulerConstants;
 import net.mich.explore.SchedulerMain;
 import net.mich.explore.Student;
 import net.mich.explore.StudentActivity;
@@ -18,7 +19,7 @@ public class ActivityScheduler {
 		StudentActivity studentActivity = null;
 		
 		try {
-			for (int i = 0; i < 4; i++) {  // CLASS PRIORITY
+			for (int i = 0; i < SchedulerConstants.NUMBER_OF_COURSES_TO_SCHEDULE; i++) {  // CLASS PRIORITY
 				for(Student student : studentList) {   // StudentS
 					
 					studentActivity = new StudentActivity();
@@ -38,7 +39,7 @@ public class ActivityScheduler {
 					if (isGradeSpecActivity) continue;
 					
 					boolean isRegistrationSuccess = false;
-					for(int j=0; j<4; j++) {   // ACT HOURS
+					for(int j=0; j<SchedulerConstants.NUMBER_OF_COURSES_TO_SCHEDULE; j++) {   // ACT HOURS
 					
 						boolean isBooked = student.getActSchedList().get(j);
 						if (isBooked) continue;
