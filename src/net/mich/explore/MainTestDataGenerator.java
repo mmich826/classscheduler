@@ -10,16 +10,7 @@ public class MainTestDataGenerator {
 
 
 	public List<Student> generateTestData(SchedulerMain mn) {
-/*		gradeScheduleMap = new HashMap< String,Integer >();
-		gradeScheduleMap.put("bb-1", new Integer(4) );
-		gradeScheduleMap.put("bb-2", new Integer(3) );
-		gradeScheduleMap.put("bb-3", new Integer(2) );
-		gradeScheduleMap.put("bb-4", new Integer(1) );
-		gradeScheduleMap.put("fb-1", new Integer(1) );
-		gradeScheduleMap.put("fb-2", new Integer(2) );
-		gradeScheduleMap.put("fb-3", new Integer(3) );
-		gradeScheduleMap.put("fb-4", new Integer(4) );
-*/
+
 		mn.gradeScheduleMap2 = new HashMap< String,List<Integer> >();
 		List<Integer> gradeGroup = new ArrayList<Integer>();
 		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
