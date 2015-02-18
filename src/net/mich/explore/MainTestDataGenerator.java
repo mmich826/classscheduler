@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.mich.explore.file.StudentScheduleReader;
+import net.mich.explore.file.StudentClassChoiceReader;
 
 public class MainTestDataGenerator {
 
@@ -47,35 +47,7 @@ public class MainTestDataGenerator {
 		gradeGroup.add(new Integer(4)); gradeGroup.add(new Integer(3));
 			mn.gradeScheduleMap2.put("fb-4", gradeGroup );
 
-		mn.scheduleMap = new HashMap< String,List<StudentActivity> >();
-		mn.scheduleMap.put("bb-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("bb-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("bb-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("bb-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("hockey-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("hockey-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("hockey-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("hockey-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("rock-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("rock-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("rock-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("rock-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("fb-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("fb-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("fb-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("fb-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("soccer-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("soccer-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("soccer-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("soccer-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("pizza-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("pizza-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("pizza-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("pizza-4", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("flag-1", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("flag-2", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("flag-3", new ArrayList<StudentActivity>() );
-		mn.scheduleMap.put("flag-4", new ArrayList<StudentActivity>() );
+		createScheduleMap(mn);
 		
 		int CAPACITY =8;
 		mn.actCapacityMap = new HashMap<String, Activity>();
@@ -109,8 +81,8 @@ public class MainTestDataGenerator {
 		mn.actCapacityMap.put("flag-4", new Activity(null, CAPACITY));
 		
 		
-		StudentScheduleReader reader = new StudentScheduleReader();
-		List<Student> StudentList = reader.readStudentActivities();
+		StudentClassChoiceReader reader = new StudentClassChoiceReader();
+		List<Student> StudentList = reader.read();
 		
 		return StudentList;
 	}
@@ -169,6 +141,38 @@ public class MainTestDataGenerator {
 		}
 
 		return StudentList;
+	}
+	
+	public void createScheduleMap(SchedulerMain mn) {
+		mn.scheduleMap = new HashMap< String,List<StudentActivity> >();
+		mn.scheduleMap.put("bb-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("bb-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("bb-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("bb-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("hockey-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("hockey-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("hockey-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("hockey-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("rock-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("rock-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("rock-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("rock-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("fb-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("fb-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("fb-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("fb-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("soccer-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("soccer-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("soccer-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("soccer-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("pizza-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("pizza-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("pizza-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("pizza-4", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("flag-1", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("flag-2", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("flag-3", new ArrayList<StudentActivity>() );
+		mn.scheduleMap.put("flag-4", new ArrayList<StudentActivity>() );
 	}
 
 }

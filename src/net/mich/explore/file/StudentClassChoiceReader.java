@@ -7,22 +7,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.mich.explore.SchedulerConstants;
+import net.mich.explore.Student;
+
 import org.apache.log4j.Logger;
 
-import net.mich.explore.Student;
-import net.mich.explore.scheduler.GradeActivityScheduler;
 
-
-public class StudentScheduleReader {
+public class StudentClassChoiceReader {
 	
-	private static final Logger LOGGER = Logger.getLogger(StudentScheduleReader.class);
+	private static final Logger LOGGER = Logger.getLogger(StudentClassChoiceReader.class);
 
 	
-	public List<Student> readStudentActivities() {
+	public List<Student> read() {
 		
-		List<Student> StudentList = new ArrayList<>();
+		List<Student> studentList = new ArrayList<Student>();
 		
-		try (BufferedReader br = new BufferedReader(new FileReader("StudentActivities.csv")))
+		try (BufferedReader br = new BufferedReader(new FileReader(SchedulerConstants.STUDENT_ACTIVITY_SELECTIONS_FILENAME)))
 		{
  
 			String sCurrentLine;
@@ -43,7 +43,7 @@ public class StudentScheduleReader {
 				k.setTeacher( tokList.get(3) );
 				k.setAct( tokList.subList(4, tokList.size()) );
 
-				StudentList.add(k);
+				studentList.add(k);
 				//System.out.println(k);
 			}
  
@@ -51,7 +51,7 @@ public class StudentScheduleReader {
 			e.printStackTrace();
 		} 
  
-		return StudentList;
+		return studentList;
 	}
 
 }

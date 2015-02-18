@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import net.mich.explore.file.StudentClassScheduleReader;
 import net.mich.explore.report.ReportGenerator;
 import net.mich.explore.scheduler.ActivityScheduler;
 import net.mich.explore.scheduler.GradeActivityScheduler;
@@ -26,12 +27,19 @@ public class SchedulerMain {
 	public static void main(String[] args) {
 		SchedulerMain th = new SchedulerMain();
 		ReportGenerator rptGenerator = new ReportGenerator();
+		MainTestDataGenerator dataGenerator = new MainTestDataGenerator();
 		
-		List<Student> studentList = new MainTestDataGenerator().generateTestData(th);
+		List<Student> studentList = dataGenerator.generateTestData(th);
 		
 		new GradeActivityScheduler().schedule(th, studentList);
 			//rptGenerator.printFullSchedule(th.scheduleMap);  // Print just grade-spec schedule
 		new ActivityScheduler().schedule(th, studentList);
+		
+		boolean isReportOnly = false; //TODO read jvm param here
+		if (isReportOnly) {
+			dataGenerator.createScheduleMap(th);
+			th.scheduleMap = th.readStudentSchedules();
+		}
 		
 		rptGenerator.printFullSchedule(th.scheduleMap);
 		//rptGenerator.printRosterByActivity(th.scheduleMap);
@@ -39,6 +47,10 @@ public class SchedulerMain {
 
 	}
 
+	Map< String,List<StudentActivity> >  readStudentSchedules() {
+		StudentClassScheduleReader reader = new StudentClassScheduleReader();
+		return reader.read(this);
+	}
 	
 	public Map<String, Activity> getActCapacityMap() {
 		return actCapacityMap;
