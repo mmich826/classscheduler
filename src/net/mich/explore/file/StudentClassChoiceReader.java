@@ -33,7 +33,7 @@ public class StudentClassChoiceReader {
 				List<String> tokList = Arrays.asList( sCurrentLine.split(",") );
 				
 				if (tokList == null || tokList.isEmpty() || tokList.get(0) == null || tokList.get(0).isEmpty()) {
-					System.out.println("Bad line reading file - either blank line or empty name.  Line number " + i);
+					LOGGER.error("Bad line reading file - either blank line or empty name.  Line number " + i);
 					continue;
 				}
 				
@@ -44,7 +44,6 @@ public class StudentClassChoiceReader {
 				k.setAct( tokList.subList(4, tokList.size()) );
 
 				studentList.add(k);
-				//System.out.println(k);
 			}
  
 		} catch (IOException e) {

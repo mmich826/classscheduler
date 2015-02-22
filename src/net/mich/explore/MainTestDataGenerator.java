@@ -40,36 +40,81 @@ public class MainTestDataGenerator {
 
 		createScheduleMap(mn);
 		
-		int CAPACITY =8;
-		mn.actCapacityMap = new HashMap<String, Activity>();
-		mn.actCapacityMap.put("bb-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("bb-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("bb-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("bb-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("hockey-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("hockey-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("hockey-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("hockey-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("fb-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("fb-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("fb-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("fb-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("rock-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("rock-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("rock-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("rock-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("soccer-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("soccer-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("soccer-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("soccer-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("pizza-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("pizza-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("pizza-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("pizza-4", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("flag-1", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("flag-2", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("flag-3", new Activity(null, CAPACITY));
-		mn.actCapacityMap.put("flag-4", new Activity(null, CAPACITY));
+//		int CAPACITY =8;
+//		String actName = null; String classLeader = null; String location = null; String altLocation = null;
+//		mn.actCapacityMap = new HashMap<String, Activity>();
+//		
+//		actName = "bb-1"; classLeader = "Mr M"; location = "Gym"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "bb-2"; classLeader = "Mr M"; location = "Gym"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "bb-3"; classLeader = "Mr MM"; location = "Gym"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "bb-4"; classLeader = "Mr MM"; location = "Gym"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "fb-1"; classLeader = "Mr B"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "fb-2"; classLeader = "Mr B"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "fb-3"; classLeader = "Mr B"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "fb-4"; classLeader = "Mr B"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "soccer-1"; classLeader = "Mr A"; location = "field 3"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "soccer-2"; classLeader = "Mr A"; location = "field 3"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "soccer-3"; classLeader = "Mr A"; location = "field 3"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "soccer-4"; classLeader = "Mr A"; location = "field 3"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "flag-1"; classLeader = "Mr C"; location = "field 4"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "flag-2"; classLeader = "Mr C"; location = "field 4"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "flag-3"; classLeader = "Mr C"; location = "field 4"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "flag-4"; classLeader = "Mr C"; location = "field 4"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "rock-1"; classLeader = "Mr DD"; location = "playgr"; altLocation = "MP";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "rock-2"; classLeader = "Mr DD"; location = "playgr"; altLocation = "MP";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "rock-3"; classLeader = "Mr DD"; location = "playgr"; altLocation = "MP";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "rock-4"; classLeader = "Mr DD"; location = "playgr"; altLocation = "MP";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "pizza-1"; classLeader = "Mr E"; location = "room a"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "pizza-2"; classLeader = "Mr E"; location = "room a"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "pizza-3"; classLeader = "Mr E"; location = "room b"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "pizza-4"; classLeader = "Mr E"; location = "room b"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "hockey-1"; classLeader = "Mrs M"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "hockey-2"; classLeader = "Mrs M"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "hockey-3"; classLeader = "Mrs M"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "hockey-4"; classLeader = "Mrs M"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		
+//		actName = "tyedye-1"; classLeader = "Mr X"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "tyedye-2"; classLeader = "Mr X"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "tyedye-3"; classLeader = "Mr X"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
+//		actName = "tyedye-4"; classLeader = "Mr X"; location = "field 1"; altLocation = "Gym";
+//		mn.actCapacityMap.put(actName, new Activity(actName, CAPACITY, classLeader, location, altLocation) );
 		
 		
 		StudentClassChoiceReader reader = new StudentClassChoiceReader();

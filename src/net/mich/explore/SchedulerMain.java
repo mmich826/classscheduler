@@ -1,10 +1,14 @@
 package net.mich.explore;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import net.mich.explore.file.ActivitySetupReader;
 import net.mich.explore.file.StudentClassScheduleReader;
 import net.mich.explore.report.ReportGenerator;
 import net.mich.explore.scheduler.ActivityScheduler;
@@ -25,18 +29,24 @@ public class SchedulerMain {
 	Map< String,List<Integer> > gradeScheduleMap2 = null; // key=grade, value=List hours offered
 
 	public static void main(String[] args) {
+		List<String> argList = Arrays.asList(args);
 		SchedulerMain th = new SchedulerMain();
 		ReportGenerator rptGenerator = new ReportGenerator();
 		MainTestDataGenerator dataGenerator = new MainTestDataGenerator();
 		
 		List<Student> studentList = dataGenerator.generateTestData(th);
+		th.actCapacityMap = new ActivitySetupReader().read();
 		
-		new GradeActivityScheduler().schedule(th, studentList);
+		
+		// Default.  Run everything
+		if (argList.isEmpty()) {
+			LOGGER.info("Beginning full scheduler run.");
+			new GradeActivityScheduler().schedule(th, studentList);
 			//rptGenerator.printFullSchedule(th.scheduleMap);  // Print just grade-spec schedule
-		new ActivityScheduler().schedule(th, studentList);
-		
-		boolean isReportOnly = false; //TODO read jvm param here
-		if (isReportOnly) {
+			new ActivityScheduler().schedule(th, studentList);
+		}
+		else if (argList.contains("runreports")) {
+			LOGGER.info("Beginning report-only run.");
 			dataGenerator.createScheduleMap(th);
 			th.scheduleMap = th.readStudentSchedules();
 		}
@@ -45,6 +55,7 @@ public class SchedulerMain {
 		//rptGenerator.printRosterByActivity(th.scheduleMap);
 		//rptGenerator.printStudentSchedule(th.scheduleMap);
 
+		LOGGER.info("Scheduler run complete.");
 	}
 
 	Map< String,List<StudentActivity> >  readStudentSchedules() {

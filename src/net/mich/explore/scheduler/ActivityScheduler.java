@@ -51,7 +51,7 @@ public class ActivityScheduler {
 							StringBuilder sb = new StringBuilder();
 							sb.append(studentActivity.getAct()).append("|").append(studentActivity.getName()).append("|")
 								.append("Activity not found:  ").append(actClassName);
-							System.out.println(sb.toString());
+							LOGGER.error(sb.toString());
 							continue;
 						}
 						
@@ -69,14 +69,13 @@ public class ActivityScheduler {
 						StringBuilder sb = new StringBuilder();
 						sb.append(studentActivity.getAct()).append("|").append(studentActivity.getName()).append("|")
 							.append("Failed to register student for grade-spec activity choice ").append(i+1);
-						System.out.println(sb.toString());
+						LOGGER.error(sb.toString());
 					}
 				}
 			}
 			
 		} catch (Exception e) {
-			System.out.println("Error scheduling:  " + studentActivity);
-			e.printStackTrace();
+			LOGGER.error("Error scheduling:  " + studentActivity, e);
 		}
 	}
 		

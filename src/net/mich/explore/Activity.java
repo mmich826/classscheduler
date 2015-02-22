@@ -1,16 +1,15 @@
 package net.mich.explore;
 
 public class Activity {
-	private String name;
+	private String activityCode;
+	private String activityName;
 	private int capacity;
+	private String activityLeader;
+	private String location;
+	private String altLocation;
 	private int enrollment;
-	
-	public Activity(String name, int capacity) {
-		super();
-		this.capacity = capacity;
-		this.name = name;
-	}
-	
+
+
 	public boolean isFull() {
 		return (capacity == enrollment);
 	}
@@ -26,16 +25,27 @@ public class Activity {
 
 	@Override
 	public String toString() {
-		return "Activity [name=" + name + ", capacity=" + capacity
-				+ ", enrollment=" + enrollment + "]";
+		return "Activity [activityCode=" + activityCode + ", activityName="
+				+ activityName + ", capacity=" + capacity + ", enrollment="
+				+ enrollment + ", activityLeader=" + activityLeader
+				+ ", location=" + location + ", altLocation=" + altLocation
+				+ "]";
 	}
 
-	public String getName() {
-		return name;
+	public String getActivityCode() {
+		return activityCode;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setActivityCode(String activityCode) {
+		this.activityCode = activityCode;
+	}
+
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
 	}
 
 	public int getCapacity() {
@@ -46,6 +56,30 @@ public class Activity {
 		this.capacity = capacity;
 	}
 
+	public String getActivityLeader() {
+		return activityLeader;
+	}
+
+	public void setActivityLeader(String activityLeader) {
+		this.activityLeader = activityLeader;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getAltLocation() {
+		return altLocation;
+	}
+
+	public void setAltLocation(String altLocation) {
+		this.altLocation = altLocation;
+	}
+
 	public int getEnrollment() {
 		return enrollment;
 	}
@@ -53,4 +87,6 @@ public class Activity {
 	public void setEnrollment(int enrollment) {
 		this.enrollment = enrollment;
 	}
+
+
 }
