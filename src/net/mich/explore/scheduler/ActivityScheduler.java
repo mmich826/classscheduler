@@ -47,15 +47,8 @@ public class ActivityScheduler {
 		                String actClassName = studentActivity.getAct() + "-" + (j+1);
 		                studentActivity.setHour(String.valueOf(j+1));
 						Activity act = mainSched.getActCapacityMap().get(actClassName);
-						if (act == null) {
-							StringBuilder sb = new StringBuilder();
-							sb.append(studentActivity.getAct()).append("|").append(studentActivity.getName()).append("|")
-								.append("Activity not found:  ").append(actClassName);
-							LOGGER.error(sb.toString());
-							continue;
-						}
 						
-						if (act.isFull()) continue;
+						if (act == null || act.isFull()) continue;
 						
 						clazList = mainSched.getScheduleMap().get(actClassName);	
 						clazList.add(studentActivity);
