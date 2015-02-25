@@ -11,6 +11,7 @@ import java.util.Map;
 
 import net.mich.explore.Activity;
 import net.mich.explore.SchedulerConstants;
+import net.mich.explore.StudentActivity;
 import net.mich.explore.scheduler.GradeActivityScheduler;
 
 import org.apache.log4j.Logger;
@@ -20,11 +21,12 @@ public class ActivitySetupReader {
 	
 	private static final Logger LOGGER = Logger.getLogger(ActivitySetupReader.class);
 
-	HashMap<String, Activity> activityMap = new HashMap<String, Activity>();
+	Map<String, Activity> activityMap = new HashMap<String, Activity>();
 	Map< String,List<Integer> > gradeActivityScheduleMap = new HashMap< String,List<Integer> >();
+	Map< String,List<StudentActivity>  > activityScheduleMap = new HashMap< String,List<StudentActivity> >();
 	
 	
-	public HashMap<String, Activity> read() {
+	public Map<String, Map> read() {
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(SchedulerConstants.ACTIVITY_SETUP_FILENAME)))
 		{
@@ -57,13 +59,20 @@ public class ActivitySetupReader {
 				if (hasGradeActivityInfo(tokList) ) {
 					setupGradeActivities(tokList.get(7), activityCode);
 				}
+				
+				addToScheduleMap(activityCode);
 			}
  
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
- 
-		return activityMap;
+		
+		Map<String, Map> scheduleMaps = new HashMap<String, Map>();
+		scheduleMaps.put(SchedulerConstants.MAP_NAME_ACTIVITY_INFO, activityMap);
+		scheduleMaps.put(SchedulerConstants.MAP_NAME_GRADE_ACTIVITY_SCHEDULE, gradeActivityScheduleMap);
+		scheduleMaps.put(SchedulerConstants.MAP_NAME_ACTIVITY_SCHEDULE, activityScheduleMap);
+		
+		return scheduleMaps;
 	}
 	
 	boolean hasGradeActivityInfo(List<String> tokList) {
@@ -77,6 +86,16 @@ public class ActivitySetupReader {
 		
 		List<Integer> gradeList = parseGradeList(grades);
 		gradeActivityScheduleMap.put(activityCode, gradeList);
+		
+	}
+	
+	void addToScheduleMap(String activityCode) {
+		if (activityCode == null || activityCode.isEmpty()) {
+			LOGGER.error("Error setting up for schedule map:  activityCode empty or null");
+			return;
+		}
+		
+		activityScheduleMap.put(activityCode, new ArrayList<StudentActivity>());
 		
 	}
 	

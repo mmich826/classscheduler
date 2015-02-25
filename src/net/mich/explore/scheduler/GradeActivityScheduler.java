@@ -52,6 +52,7 @@ public class GradeActivityScheduler {
 	
 							clazList = mainSched.getScheduleMap().get(actName);							
 							studentAct.setHour(Integer.toString(hour));
+							
 							clazList.add(studentAct);
 							act.enrollmentIncr();
 							student.getActSchedList().set(hour-1, true);

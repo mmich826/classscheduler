@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import net.mich.explore.file.ActivitySetupReader;
+import net.mich.explore.file.StudentClassChoiceReader;
 import net.mich.explore.file.StudentClassScheduleReader;
 import net.mich.explore.report.ReportGenerator;
 import net.mich.explore.scheduler.ActivityScheduler;
@@ -32,11 +33,15 @@ public class SchedulerMain {
 		List<String> argList = Arrays.asList(args);
 		SchedulerMain th = new SchedulerMain();
 		ReportGenerator rptGenerator = new ReportGenerator();
+
 		MainTestDataGenerator dataGenerator = new MainTestDataGenerator();
 		
-		List<Student> studentList = dataGenerator.generateTestData(th);
-		th.actCapacityMap = new ActivitySetupReader().read();
-		
+		Map<String, Map> scheduleMaps = new ActivitySetupReader().read();
+		th.actCapacityMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_INFO);
+		th.scheduleMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_SCHEDULE);
+		th.gradeScheduleMap2 = scheduleMaps.get(SchedulerConstants.MAP_NAME_GRADE_ACTIVITY_SCHEDULE);
+		StudentClassChoiceReader reader = new StudentClassChoiceReader();
+		List<Student> studentList = reader.read();
 		
 		// Default.  Run everything
 		if (argList.isEmpty()) {

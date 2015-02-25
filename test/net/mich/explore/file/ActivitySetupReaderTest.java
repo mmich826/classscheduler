@@ -1,11 +1,11 @@
 package net.mich.explore.file;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
 import java.util.List;
-
-import net.mich.explore.Activity;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class ActivitySetupReaderTest {
 	//@Test
 	public void test() {
 		ActivitySetupReader reader = new ActivitySetupReader();
-		HashMap<String, Activity> activityMap = reader.read();
+		Map<String, Map> activityMap = reader.read();
 		
 		assertNotNull(activityMap);
 		assertTrue(activityMap.size() > 10);
