@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 public class ActivitySetupReader {
 	
 	private static final Logger LOGGER = Logger.getLogger(ActivitySetupReader.class);
+	private static int NUM_LINE_FIELDS = 8;
 
 	Map<String, Activity> activityMap = new HashMap<String, Activity>();
 	Map< String,List<Integer> > gradeActivityScheduleMap = new HashMap< String,List<Integer> >();
@@ -76,7 +77,7 @@ public class ActivitySetupReader {
 	}
 	
 	boolean hasGradeActivityInfo(List<String> tokList) {
-		return (tokList.size() == 8);
+		return (tokList.size() == NUM_LINE_FIELDS);
 	}
 	
 	void setupGradeActivities(String grades, String activityCode) {
