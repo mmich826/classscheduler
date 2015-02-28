@@ -16,10 +16,7 @@ import net.mich.explore.scheduler.ActivityScheduler;
 import net.mich.explore.scheduler.GradeActivityScheduler;
 
 
-//TODO - log4j.  2 appenders; Errors(console), file for registration issues
 //TODO - logic to fill gaps with extra classes until fill.  Add Kid isSchedFull method
-//TODO - reader for schedule file.  Also write sched to file
-//TODO - full schedule file writer
 
 public class SchedulerMain {
 	
