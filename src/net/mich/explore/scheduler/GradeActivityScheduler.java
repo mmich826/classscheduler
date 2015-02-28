@@ -22,7 +22,7 @@ public class GradeActivityScheduler {
 		try {
 	
 			// Schedule grade specific activities first
-			for (int i = 0; i < SchedulerConstants.NUMBER_OF_COURSES_TO_SCHEDULE; i++) {  // CLASS PRIORITY
+			for (int i = 0; i < SchedulerConstants.NUMBER_OF_ACTIVITIES_TO_SCHEDULE; i++) {  // CLASS PRIORITY
 				for(Student student : studentList) {   // STUDENTS
 					studentAct = new StudentActivity();
 					studentAct.setName(student.getName()); 
