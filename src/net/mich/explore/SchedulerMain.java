@@ -53,7 +53,7 @@ public class SchedulerMain {
 			th.scheduleMap = th.readStudentSchedules();
 		}
 		
-		rptGenerator.printFullSchedule(th.scheduleMap);
+		rptGenerator.printFullSchedule(th);
 		//rptGenerator.printRosterByActivity(th.scheduleMap);
 		//rptGenerator.printStudentSchedule(th.scheduleMap);
 

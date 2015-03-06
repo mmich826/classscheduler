@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import static net.mich.explore.SchedulerConstants.*;
+import net.mich.explore.Activity;
+import net.mich.explore.SchedulerMain;
 import net.mich.explore.StudentActByStudentComparator;
 import net.mich.explore.StudentActivity;
 import net.mich.explore.file.AllStudentFileWriter;
@@ -17,7 +19,9 @@ public class ReportGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(ReportGenerator.class);
 
-	public void printFullSchedule(Map< String,List<StudentActivity> > scheduleMap) {
+	public void printFullSchedule(SchedulerMain mainSched) {
+		Map< String,List<StudentActivity> > scheduleMap = mainSched.getScheduleMap();
+		
 		StringBuilder sb = new StringBuilder();
 		
 		List<StudentActivity> StudentActivityList = new ArrayList<StudentActivity>();
@@ -35,12 +39,20 @@ public class ReportGenerator {
 		StudentActivityList.toArray(studentActivities);
 		Arrays.sort(studentActivities, new StudentActByStudentComparator() );
 		 
-		 for (StudentActivity studentAct : studentActivities) {			
-			sb.append(studentAct.getAct()).append("-").append(studentAct.getHour() )
+		 for (StudentActivity studentAct : studentActivities) {	
+			String actCode = studentAct.getAct() + "-" + studentAct.getHour();
+			sb.append(actCode)
 					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getName())
 					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getGrade())
-					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getTeacher())
-					.append("\n");
+					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getTeacher());
+					
+					Activity act = mainSched.getActCapacityMap().get(actCode);
+		            if (act != null) {
+			            sb.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(act.getLocation())
+						.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(act.getAltLocation());
+		            }
+
+					sb.append("\n");
 			
 			new AllStudentFileWriter().writeFile(sb.toString());
 		}
