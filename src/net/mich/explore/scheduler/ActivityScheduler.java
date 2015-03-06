@@ -19,7 +19,7 @@ public class ActivityScheduler {
 		StudentActivity studentActivity = null;
 		
 		try {
-			for (int i = 0; i < SchedulerConstants.NUMBER_OF_ACTIVITIES_TO_SCHEDULE; i++) {  // CLASS PRIORITY
+			for (int i = 0; i < SchedulerConstants.NUMBER_OF_STUDENT_ACTIVITY_SELECTIONS; i++) {  // CLASS PRIORITY
 				for(Student student : studentList) {   // StudentS
 					
 					studentActivity = new StudentActivity();
@@ -38,30 +38,12 @@ public class ActivityScheduler {
 					boolean isGradeSpecActivity = gradeActHours != null && !gradeActHours.isEmpty();
 					if (isGradeSpecActivity) continue;
 					
-					boolean isRegistrationSuccess = false;
-					for(int j=0; j<SchedulerConstants.NUMBER_OF_ACTIVITIES_TO_SCHEDULE; j++) {   // ACT HOURS
-					
-						boolean isBooked = student.getActSchedList().get(j);
-						if (isBooked) continue;
-						
-		                String actClassName = studentActivity.getAct() + "-" + (j+1);
-		                studentActivity.setHour(String.valueOf(j+1));
-						Activity act = mainSched.getActCapacityMap().get(actClassName);
-						
-						if (act == null || act.isFull()) continue;
-						
-						clazList = mainSched.getScheduleMap().get(actClassName);	
-						clazList.add(studentActivity);
-						act.enrollmentIncr();
-						student.getActSchedList().set(j, true);
-						isRegistrationSuccess = true;
-						break;
-					}
+					boolean isRegistrationSuccess = findOpeningAndSchedule(clazList, studentActivity, student, mainSched);
 					
 					if (!isRegistrationSuccess) {
 						StringBuilder sb = new StringBuilder();
 						sb.append(studentActivity.getAct()).append("|").append(studentActivity.getName()).append("|")
-							.append("Failed to register student for grade-spec activity choice ").append(i+1);
+							.append("Failed to register student for activity choice ").append(i+1);
 						LOGGER.error(sb.toString());
 					}
 				}
@@ -72,5 +54,28 @@ public class ActivityScheduler {
 		}
 	}
 		
+	boolean findOpeningAndSchedule(List<StudentActivity> clazList, StudentActivity studentActivity, Student student, SchedulerMain mainSched) {
+		boolean isRegistrationSuccess = false;
+		for(int j=0; j<SchedulerConstants.NUMBER_OF_ACTIVITIES_TO_SCHEDULE; j++) {   // ACT HOURS
+		
+			boolean isBooked = student.getActSchedList().get(j);
+			if (isBooked) continue;
+			
+            String actClassName = studentActivity.getAct() + "-" + (j+1);
+            studentActivity.setHour(String.valueOf(j+1));
+			Activity act = mainSched.getActCapacityMap().get(actClassName);
+			
+			if (act == null || act.isFull()) continue;
+			
+			clazList = mainSched.getScheduleMap().get(actClassName);	
+			clazList.add(studentActivity);
+			act.enrollmentIncr();
+			student.getActSchedList().set(j, true);
+			isRegistrationSuccess = true;
+			break;
+		}
+		
+		return isRegistrationSuccess;
+	}
 
 }

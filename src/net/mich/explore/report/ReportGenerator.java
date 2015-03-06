@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static net.mich.explore.SchedulerConstants.*;
 import net.mich.explore.StudentActByStudentComparator;
 import net.mich.explore.StudentActivity;
 import net.mich.explore.file.AllStudentFileWriter;
@@ -26,7 +27,6 @@ public class ReportGenerator {
 			String key = (String) iter.next();
 			List<StudentActivity> Students = scheduleMap.get(key) ;
 			for (StudentActivity Student : Students) {
-				//System.out.println(key + "|" + Student.name);
 				StudentActivityList.add(Student);
 			}
 		}
@@ -37,9 +37,9 @@ public class ReportGenerator {
 		 
 		 for (StudentActivity studentAct : studentActivities) {			
 			sb.append(studentAct.getAct()).append("-").append(studentAct.getHour() )
-					.append("|").append(studentAct.getName())
-					.append("|").append(studentAct.getGrade())
-					.append("|").append(studentAct.getTeacher())
+					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getName())
+					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getGrade())
+					.append(STUDENT_SCHEDULE_FILE_DELIMITER).append(studentAct.getTeacher())
 					.append("\n");
 			
 			new AllStudentFileWriter().writeFile(sb.toString());

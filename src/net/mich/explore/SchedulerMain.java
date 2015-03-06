@@ -37,19 +37,19 @@ public class SchedulerMain {
 		th.actCapacityMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_INFO);
 		th.scheduleMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_SCHEDULE);
 		th.gradeScheduleMap2 = scheduleMaps.get(SchedulerConstants.MAP_NAME_GRADE_ACTIVITY_SCHEDULE);
-		StudentClassChoiceReader reader = new StudentClassChoiceReader();
-		List<Student> studentList = reader.read();
 		
 		// Default.  Run everything
 		if (argList.isEmpty()) {
 			LOGGER.info("Beginning full scheduler run.");
+
+			List<Student> studentList = new StudentClassChoiceReader().read();
+
 			new GradeActivityScheduler().schedule(th, studentList);
 			//rptGenerator.printFullSchedule(th.scheduleMap);  // Print just grade-spec schedule
 			new ActivityScheduler().schedule(th, studentList);
 		}
 		else if (argList.contains("runreports")) {
 			LOGGER.info("Beginning report-only run.");
-			dataGenerator.createScheduleMap(th);
 			th.scheduleMap = th.readStudentSchedules();
 		}
 		

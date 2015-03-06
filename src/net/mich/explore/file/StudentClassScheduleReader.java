@@ -23,15 +23,15 @@ public class StudentClassScheduleReader {
 		
 		Map< String,List<StudentActivity> > scheduleMap = mn.getScheduleMap();
 		
+		String sCurrentLine = null;		
 		try (BufferedReader br = new BufferedReader(new FileReader(SchedulerConstants.STUDENT_SCHEDULE_FILENAME)))
 		{
  
-			String sCurrentLine;
 			int i = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
 				i++;
 				LOGGER.debug(sCurrentLine);
-				List<String> tokList = Arrays.asList( sCurrentLine.split("\\|") );
+				List<String> tokList = Arrays.asList( sCurrentLine.split("\\,") );
 				
 				if (tokList == null || tokList.isEmpty() || tokList.get(0) == null || tokList.get(0).isEmpty()) {
 					LOGGER.error("Bad line reading file - either blank line or empty name.  Line number " + i);
@@ -52,8 +52,8 @@ public class StudentClassScheduleReader {
 				scheduleMap.get(clazzHour).add(studentAct);
 			}
  
-		} catch (IOException e) {
-			LOGGER.error("Error reading " + SchedulerConstants.STUDENT_SCHEDULE_FILENAME + " file to generate reports:  " + e.getMessage(), e);
+		} catch (Exception e) {
+			LOGGER.error("Error reading line [" + sCurrentLine + "] in " + SchedulerConstants.STUDENT_SCHEDULE_FILENAME + " file to generate reports:  " + e.getMessage(), e);
 		} 
  
 		return scheduleMap;
