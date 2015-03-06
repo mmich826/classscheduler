@@ -51,8 +51,8 @@ public class ActivitySetupReader {
 				act.setActivityCode(activityCode);
 				
 				act.setActivityLeader(tokList.get(3));
-				act.setAltLocation(tokList.get(4));
-				act.setLocation(tokList.get(5));
+				act.setLocation(tokList.get(4));
+				act.setAltLocation(tokList.get(5));
 				act.setCapacity( Integer.valueOf(tokList.get(6)) );
 
 				activityMap.put(act.getActivityCode(), act);
