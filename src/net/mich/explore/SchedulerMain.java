@@ -45,7 +45,6 @@ public class SchedulerMain {
 			List<Student> studentList = new StudentClassChoiceReader().read();
 
 			new GradeActivityScheduler().schedule(th, studentList);
-			//rptGenerator.printFullSchedule(th.scheduleMap);  // Print just grade-spec schedule
 			new ActivityScheduler().schedule(th, studentList);
 		}
 		else if (argList.contains("runreports")) {
