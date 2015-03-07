@@ -1,19 +1,19 @@
 package net.mich.explore;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import net.mich.explore.file.ActivitySetupReader;
 import net.mich.explore.file.StudentClassChoiceReader;
 import net.mich.explore.file.StudentClassScheduleReader;
-import net.mich.explore.report.ReportGenerator;
+import net.mich.explore.report.ActivityReportGenerator;
+import net.mich.explore.report.FullReportGenerator;
+import net.mich.explore.report.StudentReportGenerator;
 import net.mich.explore.scheduler.ActivityScheduler;
 import net.mich.explore.scheduler.GradeActivityScheduler;
+
+import org.apache.log4j.Logger;
 
 
 //TODO - logic to fill gaps with extra classes until fill.  Add Kid isSchedFull method
@@ -29,16 +29,12 @@ public class SchedulerMain {
 	public static void main(String[] args) {
 		List<String> argList = Arrays.asList(args);
 		SchedulerMain th = new SchedulerMain();
-		ReportGenerator rptGenerator = new ReportGenerator();
-
-		MainTestDataGenerator dataGenerator = new MainTestDataGenerator();
 		
 		Map<String, Map> scheduleMaps = new ActivitySetupReader().read();
 		th.actCapacityMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_INFO);
 		th.scheduleMap = scheduleMaps.get(SchedulerConstants.MAP_NAME_ACTIVITY_SCHEDULE);
 		th.gradeScheduleMap2 = scheduleMaps.get(SchedulerConstants.MAP_NAME_GRADE_ACTIVITY_SCHEDULE);
 		
-		// Default.  Run everything
 		if (argList.isEmpty()) {
 			LOGGER.info("Beginning full scheduler run.");
 
@@ -52,12 +48,13 @@ public class SchedulerMain {
 			th.scheduleMap = th.readStudentSchedules();
 		}
 		
-		rptGenerator.printFullSchedule(th);
-		//rptGenerator.printRosterByActivity(th.scheduleMap);
-		//rptGenerator.printStudentSchedule(th.scheduleMap);
+		new FullReportGenerator().generate(th);
+		//new ActivityReportGenerator().generate(th);
+		//new StudentReportGenerator().generate(th);
 
 		LOGGER.info("Scheduler run complete.");
 	}
+	
 
 	Map< String,List<StudentActivity> >  readStudentSchedules() {
 		StudentClassScheduleReader reader = new StudentClassScheduleReader();
