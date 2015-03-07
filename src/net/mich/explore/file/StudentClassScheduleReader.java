@@ -37,15 +37,22 @@ public class StudentClassScheduleReader {
 					LOGGER.error("Bad line reading file - either blank line or empty name.  Line number " + i);
 					continue;
 				}
+
 				StudentActivity studentAct = new StudentActivity();
-				String clazzHour = tokList.get(0);
-				List<String> tokClazzHour = Arrays.asList( clazzHour.split("-") );
-				studentAct.setAct(tokClazzHour.get(0));
-				studentAct.setHour(tokClazzHour.get(1));
-				
-				studentAct.setName( tokList.get(1) );
-				studentAct.setGrade( tokList.get(2) );
-				studentAct.setTeacher( tokList.get(3) );
+				String clazzHour = null;
+				List<String> tokClazzHour = null;
+				try {
+					clazzHour = tokList.get(0);
+					tokClazzHour = Arrays.asList( clazzHour.split("-") );
+					studentAct.setAct(tokClazzHour.get(0));
+					studentAct.setHour(tokClazzHour.get(1));
+					
+					studentAct.setName( tokList.get(1) );
+					studentAct.setGrade( tokList.get(2) );
+					studentAct.setTeacher( tokList.get(3) );
+				} catch (Exception e) {
+					LOGGER.error("Error reading line.  Field missing:  [" + sCurrentLine + "].  Activity, name, grade and teacher must be present.");
+				}
 				
 				LOGGER.debug(studentAct);
 				
