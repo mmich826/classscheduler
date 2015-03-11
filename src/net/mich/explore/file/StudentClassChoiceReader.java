@@ -30,7 +30,7 @@ public class StudentClassChoiceReader {
 			int i = 0;
 			while ((sCurrentLine = br.readLine()) != null) {
 				i++;
-				//System.out.println(sCurrentLine);
+				LOGGER.debug(sCurrentLine);
 				List<String> tokList = Arrays.asList( sCurrentLine.split(STUDENT_SCHEDULE_FILE_DELIMITER) );
 				
 				if (tokList == null || tokList.isEmpty() || tokList.get(0) == null || tokList.get(0).isEmpty()) {
