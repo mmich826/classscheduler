@@ -48,10 +48,8 @@ public class SchedulerMain {
 			th.scheduleMap = th.readStudentSchedules();
 		}
 		
-		new FullReportGenerator().generate(th);
-		//new ActivityReportGenerator().generate(th);
-		//new StudentReportGenerator().generate(th);
-
+		new ReportManager().runReports(th);
+		
 		LOGGER.info("Scheduler run complete.");
 	}
 	

@@ -4,6 +4,6 @@ import net.mich.explore.SchedulerMain;
 
 public interface ReportGenerator {
 
-	public void generate(SchedulerMain mainSched);
+	public String generate(SchedulerMain mainSched);
 
 }

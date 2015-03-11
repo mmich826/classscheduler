@@ -13,7 +13,8 @@ public class ActivityReportGenerator implements ReportGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(ActivityReportGenerator.class);
 
-	public void generate(SchedulerMain mainSched) {
+	public String generate(SchedulerMain mainSched) {
+		StringBuilder sb = new StringBuilder(5052);
 		
 		Map< String, List<StudentActivity> > scheduleMap = mainSched.getScheduleMap();
 		
@@ -24,10 +25,15 @@ public class ActivityReportGenerator implements ReportGenerator {
 			List<StudentActivity> Students = scheduleMap.get((String)key) ;
 			// Set html header
 			for (StudentActivity Student : Students) {
-				System.out.println(key + "|" + Student.getName());		
+				sb.append( (String)key )
+					.append("|")
+					.append(Student.getName())
+					.append("\n");		
 			}
 			// Set html footer
 		}
+ 		 
+ 		return sb.toString();
 	}
 	
 }

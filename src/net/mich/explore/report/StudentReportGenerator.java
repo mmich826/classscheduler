@@ -16,7 +16,8 @@ public class StudentReportGenerator implements ReportGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(StudentReportGenerator.class);
 
-	public void generate(SchedulerMain mainSched) {
+	public String generate(SchedulerMain mainSched) {
+		StringBuilder sb = new StringBuilder(5052);
 
 		Map< String,List<StudentActivity> > scheduleMap = mainSched.getScheduleMap();
 		List<StudentActivity> StudentActivityList = new ArrayList<StudentActivity>();
@@ -42,9 +43,17 @@ public class StudentReportGenerator implements ReportGenerator {
 				 // If not first, set footer hnml
 				 // Set header html
 			 }
-			 System.out.println(studentAct.getAct() + "-" + studentAct.getHour() + "|" + name + " " + studentAct.getName() + "|" + studentAct.getGrade());		
+			 sb.append(name)
+			 	.append("|")	
+			 	.append(studentAct.getAct())
+			 	.append("-")
+			 	.append(studentAct.getHour())
+			 	.append("|")
+			 	.append(studentAct.getGrade())
+			 	.append("\n");		
 		}
 		// Pg end.  Set footer html
+		return sb.toString();
 	}
 
 }

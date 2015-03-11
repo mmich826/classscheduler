@@ -19,7 +19,7 @@ public class FullReportGenerator implements ReportGenerator {
 	
 	private static final Logger LOGGER = Logger.getLogger(FullReportGenerator.class);
 
-	public void generate(SchedulerMain mainSched) {
+	public String generate(SchedulerMain mainSched) {
 		Map< String,List<StudentActivity> > scheduleMap = mainSched.getScheduleMap();
 		
 		StringBuilder sb = new StringBuilder();
@@ -56,6 +56,8 @@ public class FullReportGenerator implements ReportGenerator {
 			
 			new AllStudentFileWriter().writeFile(sb.toString());
 		}
+		 
+		return sb.toString();
 	}
 
 }
